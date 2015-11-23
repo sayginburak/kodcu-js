@@ -1,0 +1,3 @@
+== JS Ödev
+
+Angular + MongoDB + Nodejs birleştiren bir uygulama geliştiriniz.

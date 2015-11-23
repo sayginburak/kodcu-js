@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html ng-app="sincap">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Angular App</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha256-MfvZlkHCEqatNoGiOXveE8FIwMzZg4W85qfrfIFBfYc= sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ=="
+          crossorigin="anonymous">
+    <script src="js/angular.js"></script>
+</head>
+<body>
+
+<div ng-controller="MainCtrl">
+    <form class="form-horizontal">
+        <fieldset>
+
+            <!-- Form Name -->
+            <legend>Form Name</legend>
+
+            <!-- Text input-->
+            <div class="form-group">
+                <label class="col-md-4 control-label">Name</label>
+
+                <div class="col-md-4">
+                    <input ng-model="person.name" type="text" placeholder="Enter your name"
+                           class="form-control input-md">
+
+                </div>
+            </div>
+
+            <!-- Text input-->
+            <div class="form-group">
+                <label class="col-md-4 control-label">Age</label>
+
+                <div class="col-md-4">
+                    <input ng-model="person.age" type="text" placeholder="Enter your age" class="form-control input-md">
+
+                </div>
+            </div>
+
+            <!-- Button -->
+            <div class="form-group">
+                <label class="col-md-4 control-label">Send</label>
+
+                <div class="col-md-4">
+                    <button ng-click="sendIt()" class="btn btn-primary">Send</button>
+                </div>
+            </div>
+
+        </fieldset>
+    </form>
+
+    <hr/>
+
+    <input ng-model="search" type="text"/>
+    <hr/>
+
+    <!--table>(thead>tr>th*2)+(tbody>tr>td*2)-->
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Age</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="person in persons | filter:search">
+            <td>{{person.name}}</td>
+            <td>{{person.age}}</td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+
+<script>
+    var app = angular.module("sincap", []);
+    app.controller("MainCtrl", function ($scope, $http) {
+//        $scope.person = {
+//            name : "Rahman",
+//            age : 27
+//        }
+        $scope.persons = [];
+        $http.get("/persons")
+                    .success(function (data) {
+                        console.log("data"+data)
+                        $scope.persons.push(data);
+                    }).error(function (err) {
+                        console.log(err);
+                    });
+
+        $scope.sendIt = function(){
+            $http.post("/person",$scope.person)
+                    .success(function (data) {
+                        console.log(data);
+                        $scope.persons.push(data);
+                    })
+                    .error(function (err) {
+                        console.log(err);
+                    });
+        };
+
+
+
+
+    });
+</script>
+</body>
+</html>
