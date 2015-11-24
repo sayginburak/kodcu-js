@@ -4,26 +4,7 @@ var app = express();
 
 var mongo = require('mongodb');
 var monk = require('monk');
-var db = monk('localhost:27017/nodetest1');
-var insertDocument = function(body,db, callback) {
-	db.collection('persons').insertOne( body, function(err, result) {
-	assert.equal(err, null);
-	console.log("Inserted a document into the restaurants collection.");
-	callback(result);
-	});
-};
-
-var findPersons = function(db, callback) {
-   var cursor =db.collection('persons').find( );
-   cursor.each(function(err, doc) {
-      assert.equal(err, null);
-      if (doc != null) {
-         console.dir(doc);
-      } else {
-         callback();
-      }
-   });
-};
+var db = monk('localhost:27017/testdb');
 
 app.use(function(req,res,next){
     req.db = db;
